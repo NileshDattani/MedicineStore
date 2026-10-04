@@ -224,7 +224,7 @@ class StoreDetailActivity : AppCompatActivity(), View.OnClickListener {
 
     private val mLocationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
-            var mLastLocation: Location = locationResult.lastLocation
+            val mLastLocation: Location = locationResult.lastLocation ?: return
 
 
             currentLatitude = mLastLocation.getLatitude().toString()

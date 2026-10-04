@@ -407,8 +407,8 @@ class CustomViewOfferActivity : AppCompatActivity(), View.OnClickListener {
               val end_time= dateFormat.parse(customOrderdata!!.offerDeliveryTimeEnd.toString())
 
 
-              txt_delivery_time.text =AppConstant.convertFromtoTime(SimpleDateFormat("hh:mm a").format(start_time).toLowerCase()+" to ",
-                      SimpleDateFormat("hh:mm a").format(end_time).toLowerCase())
+              txt_delivery_time.text =AppConstant.convertFromtoTime(SimpleDateFormat("hh:mm a").format(start_time).lowercase()+" to ",
+                      SimpleDateFormat("hh:mm a").format(end_time).lowercase())
 
   */
             txt_delivery_date.text = customOrderdata?.offerTodateFromdate!!
@@ -423,8 +423,8 @@ class CustomViewOfferActivity : AppCompatActivity(), View.OnClickListener {
              val end_time= dateFormat.parse(customOrderdata!!.endTime.toString())
 
 
-             txt_delivery_time.text =AppConstant.convertFromtoTime(SimpleDateFormat("hh:mm a").format(start_time).toLowerCase()+" to ",
-                     SimpleDateFormat("hh:mm a").format(end_time).toLowerCase())
+             txt_delivery_time.text =AppConstant.convertFromtoTime(SimpleDateFormat("hh:mm a").format(start_time).lowercase()+" to ",
+                     SimpleDateFormat("hh:mm a").format(end_time).lowercase())
  */
 
             txt_delivery_date.text = customOrderdata?.todateFromdate!!
@@ -512,7 +512,7 @@ class CustomViewOfferActivity : AppCompatActivity(), View.OnClickListener {
         val dateFormat = SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.US)
 
         txt_datentime.text = datenTime.toString()
-        //SimpleDateFormat("dd MMM,yyyy hh:mm a").format(createdConvertedDate).toLowerCase()
+        //SimpleDateFormat("dd MMM,yyyy hh:mm a").format(createdConvertedDate).lowercase()
 
         val cal1 = Calendar.getInstance()
         val currDate1 = dateFormat.format(cal1.time)

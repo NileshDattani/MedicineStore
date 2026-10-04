@@ -1,5 +1,6 @@
 package pharmlane.com.PharmLaneStore.activities
 
+import androidx.activity.OnBackPressedCallback
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
@@ -47,6 +48,10 @@ class CustomMakeOfferActivity : AppCompatActivity(), View.OnClickListener,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // From Android 16 the system no longer calls onBackPressed(); back goes through the dispatcher.
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() = handleBack()
+        })
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR//  set status text dark
 
         setContentView(R.layout.activity_custom_make_offer)
@@ -84,10 +89,10 @@ class CustomMakeOfferActivity : AppCompatActivity(), View.OnClickListener,
         //val dateFormat = SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.US)
         // val createdConvertedDate = dateFormat.parse(customOrderdata?.createdDate!!)
         // val date = SimpleDateFormat("dd MMM,yyyy").format(createdConvertedDate)
-        //  val time = SimpleDateFormat("hh:mm a").format(createdConvertedDate).toLowerCase()
+        //  val time = SimpleDateFormat("hh:mm a").format(createdConvertedDate).lowercase()
 
         txt_order_dtntime.text = customOrderdata?.createdDate
-        //AppConstant.convertdatentimetoOrderTime(customOrderdata!!.createdDate!!).toLowerCase()
+        //AppConstant.convertdatentimetoOrderTime(customOrderdata!!.createdDate!!).lowercase()
         recycler!!.setHasFixedSize(true)
         recycler!!.layoutManager =
                 LinearLayoutManager(this)
@@ -644,7 +649,7 @@ class CustomMakeOfferActivity : AppCompatActivity(), View.OnClickListener,
         var arrProduct = ArrayList<SubmitOffer.Products>()
     }
 
-    override fun onBackPressed() {
+    private fun handleBack() {
 
 
         checkQty()

@@ -42,12 +42,12 @@ class ViewPhotoIdActivity : AppCompatActivity(), View.OnClickListener {
         Glide.with(this)
                 .load(photo_id)
                 .listener(object : RequestListener<Drawable?> {
-                    override fun onLoadFailed(@Nullable e: GlideException?, model: Any?, target: Target<Drawable?>?, isFirstResource: Boolean): Boolean {
+                    override fun onLoadFailed(@Nullable e: GlideException?, model: Any?, target: Target<Drawable?>, isFirstResource: Boolean): Boolean {
                         pb_image.setVisibility(View.GONE)
                         return false
                     }
 
-                    override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable?>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                    override fun onResourceReady(resource: Drawable, model: Any, target: Target<Drawable?>?, dataSource: DataSource, isFirstResource: Boolean): Boolean {
                         pb_image.setVisibility(View.GONE)
                         return false
                     }

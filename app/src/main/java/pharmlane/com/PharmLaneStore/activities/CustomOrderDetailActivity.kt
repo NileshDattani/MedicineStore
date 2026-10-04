@@ -299,7 +299,7 @@ class CustomOrderDetailActivity : AppCompatActivity(), View.OnClickListener {
 
                     txt_order_id.text = "ID: " + customOrderdata!!.orderNo
                     txt_order_dtntime.text = (customOrderdata?.createdDate!!)
-                    //  AppConstant.convertdatentimetoOrderTime(customOrderdata!!.createdDate!!).toLowerCase()
+                    //  AppConstant.convertdatentimetoOrderTime(customOrderdata!!.createdDate!!).lowercase()
 
                     /* if (customOrderdata!!.products!!.size>3){
                          txt_view_all_produts.visibility = View.VISIBLE
@@ -477,11 +477,11 @@ class CustomOrderDetailActivity : AppCompatActivity(), View.OnClickListener {
             val createdConvertedTime = dateFormat1.parse(startTime)
             val createdConvertedTime1 = dateFormat1.parse(endTime)
             txt_del_time.text =
-                    SimpleDateFormat("hh:mm a",Locale.US).format(createdConvertedTime).toLowerCase() + " to " + SimpleDateFormat(
+                    SimpleDateFormat("hh:mm a",Locale.US).format(createdConvertedTime).lowercase() + " to " + SimpleDateFormat(
                             "hh:mm a"
                     ).format(
                             createdConvertedTime1
-                    ).toLowerCase()
+                    ).lowercase()
         }
         val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.US)
         if (!from_date.equals("")) {

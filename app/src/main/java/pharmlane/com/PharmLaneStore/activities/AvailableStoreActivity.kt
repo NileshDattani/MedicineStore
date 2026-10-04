@@ -66,7 +66,7 @@ class AvailableStoreActivity : AppCompatActivity(), View.OnClickListener {
         val temp = arrayListOf<StoreListResponse.Datum>()
         for (d in storeListArray) {
             //or use .equal(text) with you want equal match
-            //use .toLowerCase() for better matches
+            //use .lowercase() for better matches
             if (d.name!!.contains(text, ignoreCase = true) || d.zipcode!!.contains(
                     text,
                     ignoreCase = true

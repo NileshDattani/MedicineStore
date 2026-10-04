@@ -1,5 +1,6 @@
 package pharmlane.com.PharmLaneStore.activities
 
+import androidx.activity.OnBackPressedCallback
 import android.app.Dialog
 import android.content.Intent
 import android.content.res.Resources
@@ -92,6 +93,10 @@ class MakeOfferActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // From Android 16 the system no longer calls onBackPressed(); back goes through the dispatcher.
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() = handleBack()
+        })
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR//  set status text dark
 
         setContentView(R.layout.activity_make_offer)
@@ -794,7 +799,7 @@ class MakeOfferActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
-    override fun onBackPressed() {
+    private fun handleBack() {
         if (iNormalFLow == 1) {
             startActivityForResult(Intent(this, CustomViewOfferActivity::class.java)
                     .putExtra("reviewfinaloffer", "1")
@@ -813,7 +818,7 @@ class MakeOfferActivity : AppCompatActivity(), View.OnClickListener {
 
         when (v?.id) {
             R.id.img_back -> {
-                onBackPressed()
+                handleBack()
 
 
             }

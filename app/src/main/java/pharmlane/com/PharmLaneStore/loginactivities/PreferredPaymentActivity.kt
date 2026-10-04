@@ -1,5 +1,6 @@
 package pharmlane.com.PharmLaneStore.loginactivities
 
+import pharmlane.com.PharmLaneStore.utills.IMAGE_PERMISSIONS
 import android.Manifest
 import android.annotation.TargetApi
 import android.content.ActivityNotFoundException
@@ -60,8 +61,8 @@ import pharmlane.com.PharmLaneStore.response.RegisterResponse
 import pharmlane.com.PharmLaneStore.utills.AppConstant
 import pharmlane.com.PharmLaneStore.utills.InternalStorageContentProvider
 import pharmlane.com.PharmLaneStore.utills.ScaleFile
-import com.theartofdev.edmodo.cropper.CropImage
-import com.theartofdev.edmodo.cropper.CropImageView
+import pharmlane.com.PharmLaneStore.utills.cropper.CropImage
+import com.canhub.cropper.CropImageView
 import kotlinx.android.synthetic.main.activity_preferred_payment.*
 import kotlinx.android.synthetic.main.activity_preferred_payment.progressBar
 import kotlinx.android.synthetic.main.activity_verify.*
@@ -84,12 +85,7 @@ class PreferredPaymentActivity : AppCompatActivity(), View.OnClickListener,
     private val REQUEST_CAMERA = 0
     val REQUEST_CODE_TAKE_PICTURE = 2
     val REQUEST_CODE_GALLERY = 1
-    val INITIAL_GALLERY = arrayOf<String>(
-        Manifest.permission.CAMERA,
-        Manifest.permission.READ_EXTERNAL_STORAGE,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE
-
-    )
+    val INITIAL_GALLERY = IMAGE_PERMISSIONS
 
     private var img_qr:AppCompatImageView?=null
 
@@ -323,9 +319,7 @@ class PreferredPaymentActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     private fun canAccessCamera(): Boolean {
-        return hasPermission(Manifest.permission.CAMERA) && hasPermission(Manifest.permission.READ_EXTERNAL_STORAGE) && hasPermission(
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-        )
+        return IMAGE_PERMISSIONS.all { hasPermission(it) }
     }
 
     @TargetApi(Build.VERSION_CODES.M)

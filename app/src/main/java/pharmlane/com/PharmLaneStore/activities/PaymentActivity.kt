@@ -93,7 +93,7 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener, SwipeRefreshL
                 orderDeliveredDate = intent.getStringExtra("orderDeliveredDate")
                 txt_del_time.visibility= View.VISIBLE
                 txt_del_time.text = AppConstant.convertdatentimetoOrderTime2(orderDeliveredDate)
-                       // AppConstant.convertdatentimetoOrderTime2(orderDeliveredDate).toLowerCase()
+                       // AppConstant.convertdatentimetoOrderTime2(orderDeliveredDate).lowercase()
                 if (intent.getStringExtra("paymentVerifyDate") != null && !intent.getStringExtra("paymentVerifyDate").equals("")) {
 
                     txt_paymnt_time.text = AppConstant.convertdatentimetoOrderTime2(intent.getStringExtra("paymentVerifyDate"))
@@ -117,7 +117,7 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener, SwipeRefreshL
                 } else {
 
                     txt_verification_time.text =AppConstant.convertdatentimetoOrderTime2(receiverVerifyDate)
-                           // AppConstant.convertdatentimetoOrderTime1(receiverVerifyDate).toLowerCase()
+                           // AppConstant.convertdatentimetoOrderTime1(receiverVerifyDate).lowercase()
                 }
                 deliverLayout()
             } else if (intent.getStringExtra("paymentVerifyDate") != null && !intent.getStringExtra("paymentVerifyDate").equals("")) {
@@ -140,7 +140,7 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener, SwipeRefreshL
                 } else {
 
                     txt_verification_time.text =AppConstant.convertdatentimetoOrderTime2(receiverVerifyDate)
-                          //  AppConstant.convertdatentimetoOrderTime1(receiverVerifyDate).toLowerCase()
+                          //  AppConstant.convertdatentimetoOrderTime1(receiverVerifyDate).lowercase()
                 }
                 paymentLayout()
 
@@ -155,7 +155,7 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener, SwipeRefreshL
                 } else {
 
                     txt_verification_time.text =AppConstant.convertdatentimetoOrderTime2(receiverVerifyDate)
-                           // AppConstant.convertdatentimetoOrderTime1(receiverVerifyDate).toLowerCase()
+                           // AppConstant.convertdatentimetoOrderTime1(receiverVerifyDate).lowercase()
                 }
                 skipLayout()
 
@@ -721,7 +721,7 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener, SwipeRefreshL
 
                     orderListApi()
                     AppConstant.setPreferenceText(AppConstant.FINAL_AMOUNT, amountReceived)
-                    //AppConstant.convertdatentimetoOrderTime1(response.body()!!.data!!.paymentVerifyDate!!).toLowerCase()
+                    //AppConstant.convertdatentimetoOrderTime1(response.body()!!.data!!.paymentVerifyDate!!).lowercase()
                     // txt_del_time.setText(AppConstant.convertdatentimetoOrderTime1(response.body()!!.data!!.paymentVerifyDate!!))
                     paymentLayout()
 
@@ -1278,7 +1278,9 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener, SwipeRefreshL
     }
 
     fun isStoragePermissionGranted(): Boolean {
-        if (SDK_INT >= 23) {
+        // DownloadManager needs no storage permission from Android 10, and WRITE_EXTERNAL_STORAGE
+        // can no longer be granted there, so asking for it blocked invoice downloads.
+        if (SDK_INT in 23..28) {
             if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) === PackageManager.PERMISSION_GRANTED) {
                 return true
             } else {

@@ -332,29 +332,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/txt_geo_location" />
 
 
-            <com.kofigyan.stateprogressbar.StateProgressBar
-                android:id="@+id/your_state_progress_bar_id"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_10"
-                android:visibility="gone"
-                app:layout_constraintEnd_toStartOf="@+id/guideline_e"
-                app:layout_constraintStart_toEndOf="@+id/guideline_s"
-                app:layout_constraintTop_toBottomOf="@+id/view4"
-                app:spb_animateToCurrentProgressState="true"
-                app:spb_animationDuration="10000"
-                app:spb_animationStartDelay="500"
-                app:spb_currentStateDescriptionColor="@color/colorAccent"
-                app:spb_currentStateNumber="two"
-                app:spb_maxStateNumber="three"
-                app:spb_stateBackgroundColor="#808080"
-                app:spb_stateDescriptionColor="@color/colorAccent"
-                app:spb_stateForegroundColor="@color/colorAccent"
-                app:spb_stateLineThickness="1dp"
-                app:spb_stateNumberBackgroundColor="@color/bg_color"
-                app:spb_stateNumberForegroundColor="@color/colorWhite"
-                app:spb_stateTextSize="@dimen/sp_14" />
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycl"
                 android:layout_width="0dp"

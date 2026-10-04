@@ -65,12 +65,12 @@ class PaymentMethodAdapter(
         Glide.with(context).load(paymentList[pos].qr_img)
                 .placeholder(R.drawable.ic_launcher_background)
                 .listener(object : RequestListener<Drawable?> {
-                    override fun onLoadFailed(@Nullable e: GlideException?, model: Any?, target: Target<Drawable?>?, isFirstResource: Boolean): Boolean {
+                    override fun onLoadFailed(@Nullable e: GlideException?, model: Any?, target: Target<Drawable?>, isFirstResource: Boolean): Boolean {
                         Log.e("HElloDATA", "   onLoadFailed   " + paymentList.get(pos).name)
                         return false
                     }
 
-                    override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable?>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                    override fun onResourceReady(resource: Drawable, model: Any, target: Target<Drawable?>?, dataSource: DataSource, isFirstResource: Boolean): Boolean {
                         Log.e("HElloDATA", "   onResourceReady   " + paymentList.get(pos).name)
 
                         return false

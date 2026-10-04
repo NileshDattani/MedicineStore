@@ -1,0 +1,153 @@
+// Replacement for the `kotlin-android-extensions` plugin, which no longer exists in current Kotlin.
+//
+// For every layout in src/main/res/layout*/ this generates the same packages the plugin used to:
+//   kotlinx.android.synthetic.main.<layout>        -> view properties on Activity, Fragment and Dialog
+//   kotlinx.android.synthetic.main.<layout>.view   -> view properties on View
+// so the existing `import kotlinx.android.synthetic.main.<layout>.*` lines keep working unchanged.
+// Like the plugin, the properties have platform types: a view that is not in the current layout
+// (or a Fragment without a view) reads as null instead of throwing.
+
+import groovy.xml.XmlSlurper
+
+abstract class GenerateSyntheticViewAccessors extends DefaultTask {
+
+    @InputFiles
+    @PathSensitive(PathSensitivity.RELATIVE)
+    abstract ConfigurableFileCollection getLayoutFiles()
+
+    @Input
+    abstract Property<String> getNamespace()
+
+    @OutputDirectory
+    abstract DirectoryProperty getOutputDir()
+
+    static final Set<String> KOTLIN_KEYWORDS = [
+            'as', 'break', 'class', 'continue', 'do', 'else', 'false', 'for', 'fun', 'if', 'in',
+            'interface', 'is', 'null', 'object', 'package', 'return', 'super', 'this', 'throw',
+            'true', 'try', 'typealias', 'typeof', 'val', 'var', 'when', 'while'
+    ] as Set
+
+    static final Set<String> ANDROID_VIEW_CLASSES =
+            ['View', 'ViewGroup', 'ViewStub', 'SurfaceView', 'TextureView'] as Set
+
+    static String quote(String name) {
+        KOTLIN_KEYWORDS.contains(name) ? "`$name`" : name
+    }
+
+    static String layoutName(File file) {
+        file.name.replaceFirst(/\.xml$/, '')
+    }
+
+    static String classForTag(String tag, def node, Map<String, String> rootTypes) {
+        switch (tag) {
+            case 'include':
+                String included = node.@layout.text().replaceFirst(/^@layout\//, '')
+                return rootTypes.containsKey(included) ? rootTypes[included] : 'android.view.View'
+            case 'merge':
+            case 'requestFocus':
+            case 'tag':
+                return null
+            case 'fragment':
+                return 'android.view.View'
+            case 'view':
+                String cls = node.@'class'.text()
+                return cls ? cls.replace('$', '.') : 'android.view.View'
+        }
+        if (tag.contains('.')) return tag.replace('$', '.')
+        if (ANDROID_VIEW_CLASSES.contains(tag)) return "android.view.$tag"
+        if (tag == 'WebView') return 'android.webkit.WebView'
+        return "android.widget.$tag"
+    }
+
+    @TaskAction
+    void generate() {
+        File out = outputDir.get().asFile
+        out.deleteDir()
+        out.mkdirs()
+
+        def slurper = { new XmlSlurper(false, false) }
+        Map<String, List> parsed = [:]
+        layoutFiles.files.sort { it.path }.each { File f ->
+            if (f.name.endsWith('.xml')) {
+                parsed.computeIfAbsent(layoutName(f)) { [] } << slurper().parse(f)
+            }
+        }
+
+        // Root view class of every layout, needed to type <include android:id="..."> tags.
+        Map<String, String> rootTypes = [:]
+        parsed.each { String name, List roots ->
+            rootTypes[name] = roots.collect { classForTag(it.name(), it, [:]) }.find { it != null }
+        }
+
+        String rClass = "${namespace.get()}.R"
+        parsed.each { String name, List roots ->
+            // id -> view class, merged across layout-* configurations like the old plugin did
+            Map<String, String> ids = new TreeMap<>()
+            roots.each { root ->
+                root.depthFirst().each { node ->
+                    String id = node.@'android:id'.text()
+                    def m = id =~ /^@\+?id\/([A-Za-z_][A-Za-z0-9_]*)$/
+                    if (!m.matches()) return
+                    String cls = classForTag(node.name(), node, rootTypes)
+                    if (cls == null) return
+                    String key = m.group(1)
+                    ids[key] = (ids.containsKey(key) && ids[key] != cls) ? 'android.view.View' : cls
+                }
+            }
+            if (ids.isEmpty()) return
+
+            String pkg = "kotlinx.android.synthetic.main.${quote(name)}"
+            StringBuilder main = new StringBuilder()
+            StringBuilder view = new StringBuilder()
+            main << "@file:Suppress(\"unused\", \"RedundantVisibilityModifier\", \"HasPlatformType\")\n"
+            main << "package $pkg\n\n"
+            view << "@file:Suppress(\"unused\", \"RedundantVisibilityModifier\", \"HasPlatformType\")\n"
+            view << "package ${pkg}.view\n\n"
+            ids.each { String id, String cls ->
+                String prop = quote(id)
+                String ref = "${rClass}.id.${prop}"
+                main << "public val android.app.Activity.${prop} get() = findViewById<${cls}>(${ref})\n"
+                main << "public val android.app.Dialog.${prop} get() = findViewById<${cls}>(${ref})\n"
+                main << "public val androidx.fragment.app.Fragment.${prop} get() = " +
+                        "kotlinx.android.synthetic.SyntheticViews.find<${cls}>(this, ${ref})\n"
+                view << "public val android.view.View.${prop} get() = findViewById<${cls}>(${ref})\n"
+            }
+            File dir = new File(out, "kotlinx/android/synthetic/main/${name}")
+            dir.mkdirs()
+            new File(dir, "${name}.kt").text = main.toString()
+            File viewDir = new File(dir, 'view')
+            viewDir.mkdirs()
+            new File(viewDir, "${name}_view.kt").text = view.toString()
+        }
+
+        // Java helper so Fragment accessors keep the plugin's platform (nullable-but-unchecked) type.
+        File helperDir = new File(out, 'kotlinx/android/synthetic')
+        helperDir.mkdirs()
+        new File(helperDir, 'SyntheticViews.java').text = '''\
+package kotlinx.android.synthetic;
+
+import android.view.View;
+
+public final class SyntheticViews {
+    private SyntheticViews() {}
+
+    @SuppressWarnings("unchecked")
+    public static <T extends View> T find(androidx.fragment.app.Fragment fragment, int id) {
+        View root = fragment.getView();
+        return root == null ? null : (T) root.findViewById(id);
+    }
+}
+'''
+    }
+}
+
+def syntheticsDir = layout.buildDirectory.dir('generated/source/synthetics/main')
+
+def generateSynthetics = tasks.register('generateSyntheticViewAccessors', GenerateSyntheticViewAccessors) {
+    layoutFiles.from(fileTree('src/main/res') { include 'layout*/*.xml' })
+    namespace.set(android.namespace)
+    outputDir.set(syntheticsDir)
+}
+
+android.sourceSets.main.java.srcDir(syntheticsDir)
+tasks.named('preBuild').configure { dependsOn generateSynthetics }

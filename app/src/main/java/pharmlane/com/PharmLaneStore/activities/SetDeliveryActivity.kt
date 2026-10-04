@@ -701,8 +701,8 @@ class SetDeliveryActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListe
                          Toast.LENGTH_SHORT).show();
              } else {*/
             // from_time = cal.getTimeInMillis()
-            txtFromTime?.text = SimpleDateFormat("hh:mm a",Locale.US).format(cal.time).toLowerCase()
-            fromTime = SimpleDateFormat("hh:mm a",Locale.US).format(cal.time).toLowerCase()
+            txtFromTime?.text = SimpleDateFormat("hh:mm a",Locale.US).format(cal.time).lowercase()
+            fromTime = SimpleDateFormat("hh:mm a",Locale.US).format(cal.time).lowercase()
             customOrderdata?.startTime = fromTime
             //txtToTime!!.setText("")
             //txtToTime!!.setHint(R.string.to_time)
@@ -725,14 +725,14 @@ class SetDeliveryActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListe
             cal.set(Calendar.HOUR_OF_DAY, hour)
             cal.set(Calendar.MINUTE, minute)
 
-            txtToTime!!.text = SimpleDateFormat("hh:mm a",Locale.US).format(cal.time).toLowerCase()
-            toTime = SimpleDateFormat("hh:mm a",Locale.US).format(cal.time).toLowerCase()
+            txtToTime!!.text = SimpleDateFormat("hh:mm a",Locale.US).format(cal.time).lowercase()
+            toTime = SimpleDateFormat("hh:mm a",Locale.US).format(cal.time).lowercase()
             customOrderdata?.endTime = toTime
 
             /* if (from_time != null && cal.getTimeInMillis() >= from_time!!) {
                  //it's after current
-                 txtToTime!!.text = SimpleDateFormat("hh:mm a").format(cal.time).toLowerCase()
-                 toTime = SimpleDateFormat("hh:mm a").format(cal.time).toLowerCase()
+                 txtToTime!!.text = SimpleDateFormat("hh:mm a").format(cal.time).lowercase()
+                 toTime = SimpleDateFormat("hh:mm a").format(cal.time).lowercase()
                  customOrderdata?.startTime = toTime
                  //  txt_ur_del_time.text = (fromTime + " to " + toTime)
 
