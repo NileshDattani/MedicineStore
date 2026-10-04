@@ -50,7 +50,7 @@ class DemoActivity : AppCompatActivity(), View.OnClickListener {
             }
         })
        // webview.loadUrl("https://www.pharmlane.com/admin/demo-management-storeview")
-        webview.loadUrl("http://96.126.124.89/medical/admin/demo-management-storeview")
+        webview.loadUrl("https://app.pharmlane.com/pharmlen/admin/demo-management-storeview")
 
     }
 
