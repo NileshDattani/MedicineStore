@@ -85,7 +85,7 @@ class ByZipCodeFragment(val filterListener: FiltersInterFace) : Fragment() {
                         val jObjError = JSONObject(response.errorBody()!!.string())
                         Toast.makeText(
                                 context,
-                                "" + jObjError.getString("message"),
+                                AppConstant.serverErrorMessage(jObjError),
                                 Toast.LENGTH_SHORT
                         ).show()
 

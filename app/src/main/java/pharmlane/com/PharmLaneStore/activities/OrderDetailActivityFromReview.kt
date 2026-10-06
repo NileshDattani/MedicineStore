@@ -439,7 +439,7 @@ class OrderDetailActivityFromReview : AppCompatActivity(), View.OnClickListener 
                         val jObjError = JSONObject(response.errorBody()!!.string())
                         Toast.makeText(
                                 this@OrderDetailActivityFromReview,
-                                "" + jObjError.getString("message"),
+                                AppConstant.serverErrorMessage(jObjError),
                                 Toast.LENGTH_SHORT
                         ).show()
 

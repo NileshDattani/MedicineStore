@@ -311,7 +311,7 @@ class UploadInvoiceActivity : AppCompatActivity(), View.OnClickListener {
                         val jObjError = JSONObject(response.errorBody()!!.string())
                         Toast.makeText(
                                 this@UploadInvoiceActivity,
-                                "" + jObjError.getString("message"),
+                                AppConstant.serverErrorMessage(jObjError),
                                 Toast.LENGTH_SHORT
                         ).show()
 

@@ -108,7 +108,7 @@ class SeekFinanceActivity : AppCompatActivity(), View.OnClickListener {
                         val jObjError = JSONObject(response.errorBody()!!.string())
                         Toast.makeText(
                             this@SeekFinanceActivity,
-                            "" + jObjError.getString("message"),
+                            AppConstant.serverErrorMessage(jObjError),
                             Toast.LENGTH_SHORT
                         ).show()
 

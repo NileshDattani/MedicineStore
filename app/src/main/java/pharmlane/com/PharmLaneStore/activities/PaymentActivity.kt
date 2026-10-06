@@ -731,7 +731,7 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener, SwipeRefreshL
                         val jObjError = JSONObject(response.errorBody()!!.string())
                         Toast.makeText(
                                 this@PaymentActivity,
-                                "" + jObjError.getString("message"),
+                                AppConstant.serverErrorMessage(jObjError),
                                 Toast.LENGTH_SHORT
                         ).show()
 
@@ -784,7 +784,7 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener, SwipeRefreshL
                         val jObjError = JSONObject(response.errorBody()!!.string())
                         Toast.makeText(
                                 this@PaymentActivity,
-                                "" + jObjError.getString("message"),
+                                AppConstant.serverErrorMessage(jObjError),
                                 Toast.LENGTH_SHORT
                         ).show()
 
@@ -857,7 +857,7 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener, SwipeRefreshL
                         val jObjError = JSONObject(response.errorBody()!!.string())
                         Toast.makeText(
                                 this@PaymentActivity,
-                                "" + jObjError.getString("message"),
+                                AppConstant.serverErrorMessage(jObjError),
                                 Toast.LENGTH_SHORT
                         ).show()
 
@@ -946,7 +946,7 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener, SwipeRefreshL
                         val jObjError = JSONObject(response.errorBody()!!.string())
                         Toast.makeText(
                                 this@PaymentActivity,
-                                "" + jObjError.getString("message"),
+                                AppConstant.serverErrorMessage(jObjError),
                                 Toast.LENGTH_SHORT
                         ).show()
 
@@ -1003,7 +1003,7 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener, SwipeRefreshL
                         val jObjError = JSONObject(response.errorBody()!!.string())
                         Toast.makeText(
                                 this@PaymentActivity,
-                                "" + jObjError.getString("message"),
+                                AppConstant.serverErrorMessage(jObjError),
                                 Toast.LENGTH_SHORT
                         ).show()
 
@@ -1254,7 +1254,7 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener, SwipeRefreshL
                         val jObjError = JSONObject(response.errorBody()!!.string())
                         Toast.makeText(
                                 this@PaymentActivity,
-                                "" + jObjError.getString("message"),
+                                AppConstant.serverErrorMessage(jObjError),
                                 Toast.LENGTH_SHORT
                         ).show()
 
@@ -1424,7 +1424,7 @@ class PaymentActivity : AppCompatActivity(), View.OnClickListener, SwipeRefreshL
                         val jObjError = JSONObject(response.errorBody()!!.string())
                         Toast.makeText(
                                 this@PaymentActivity,
-                                "" + jObjError.getString("message"),
+                                AppConstant.serverErrorMessage(jObjError),
                                 Toast.LENGTH_SHORT
                         ).show()
 

@@ -82,7 +82,7 @@ class NotificationsActivity : AppCompatActivity(), View.OnClickListener {
                         val jObjError = JSONObject(response.errorBody()!!.string())
                         Toast.makeText(
                             this@NotificationsActivity,
-                            "" + jObjError.getString("message"),
+                            AppConstant.serverErrorMessage(jObjError),
                             Toast.LENGTH_SHORT
                         ).show()
 

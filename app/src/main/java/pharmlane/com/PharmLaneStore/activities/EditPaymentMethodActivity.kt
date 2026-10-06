@@ -189,7 +189,7 @@ class EditPaymentMethodActivity : AppCompatActivity(), View.OnClickListener, Sto
                         val jObjError = JSONObject(response.errorBody()!!.string())
                         Toast.makeText(
                                 this@EditPaymentMethodActivity,
-                                "" + jObjError.getString("message"),
+                                AppConstant.serverErrorMessage(jObjError),
                                 Toast.LENGTH_SHORT
                         ).show()
 

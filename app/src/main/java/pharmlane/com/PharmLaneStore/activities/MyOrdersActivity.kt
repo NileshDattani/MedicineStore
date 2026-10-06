@@ -155,7 +155,7 @@ class MyOrdersActivity : AppCompatActivity(), View.OnClickListener, SortByAdapte
                         val jObjError = JSONObject(response.errorBody()!!.string())
                         Toast.makeText(
                                 this@MyOrdersActivity,
-                                "" + jObjError.getString("message"),
+                                AppConstant.serverErrorMessage(jObjError),
                                 Toast.LENGTH_SHORT
                         ).show()
                     } catch (e: Exception) {

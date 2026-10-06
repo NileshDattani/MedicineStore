@@ -3,6 +3,7 @@
 package pharmlane.com.PharmLaneStore.utills
 
 
+import org.json.JSONObject
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.graphics.Bitmap
@@ -368,5 +369,16 @@ object AppConstant {
             b = false
         }
         return b
+    }
+
+    /** Message for a failed API response: the server sends either "message" or an "error" (string or object). */
+    fun serverErrorMessage(body: JSONObject): String {
+        body.optString("message").takeIf { it.isNotBlank() }?.let { return it }
+        val error = body.opt("error")
+        return when (error) {
+            is JSONObject -> error.optString("message").takeIf { it.isNotBlank() } ?: "Server error"
+            is String -> error
+            else -> "Server error"
+        }
     }
 }

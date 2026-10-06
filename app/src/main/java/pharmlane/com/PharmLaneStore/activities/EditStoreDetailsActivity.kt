@@ -346,7 +346,7 @@ class EditStoreDetailsActivity : AppCompatActivity(), View.OnClickListener, Loca
                         val jObjError = JSONObject(response.errorBody()!!.string())
                         Toast.makeText(
                                 this@EditStoreDetailsActivity,
-                                "" + jObjError.getString("message"),
+                                AppConstant.serverErrorMessage(jObjError),
                                 Toast.LENGTH_SHORT
                         ).show()
 
