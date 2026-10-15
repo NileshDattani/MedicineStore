@@ -409,12 +409,12 @@ class OrderDetailActivityFromReview : AppCompatActivity(), View.OnClickListener 
                                 Glide.with(this@OrderDetailActivityFromReview)
                                         .load(customOrderdataReview!!.prescriptionImage)
                                         .listener(object : RequestListener<Drawable?> {
-                                            override fun onLoadFailed(@Nullable e: GlideException?, model: Any?, target: Target<Drawable?>?, isFirstResource: Boolean): Boolean {
+                                            override fun onLoadFailed(@Nullable e: GlideException?, model: Any?, target: Target<Drawable?>, isFirstResource: Boolean): Boolean {
                                                 progressBar!!.visibility = View.GONE
                                                 return false
                                             }
 
-                                            override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable?>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                                            override fun onResourceReady(resource: Drawable, model: Any, target: Target<Drawable?>?, dataSource: DataSource, isFirstResource: Boolean): Boolean {
                                                 progressBar!!.visibility = View.GONE
                                                 return false
                                             }
@@ -439,7 +439,7 @@ class OrderDetailActivityFromReview : AppCompatActivity(), View.OnClickListener 
                         val jObjError = JSONObject(response.errorBody()!!.string())
                         Toast.makeText(
                                 this@OrderDetailActivityFromReview,
-                                "" + jObjError.getString("message"),
+                                AppConstant.serverErrorMessage(jObjError),
                                 Toast.LENGTH_SHORT
                         ).show()
 

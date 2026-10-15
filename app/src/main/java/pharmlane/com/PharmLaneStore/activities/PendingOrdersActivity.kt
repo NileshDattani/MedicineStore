@@ -120,7 +120,7 @@ class PendingOrdersActivity : AppCompatActivity(), View.OnClickListener, SwipeRe
                         val jObjError = JSONObject(response.errorBody()!!.string())
                         Toast.makeText(
                             this@PendingOrdersActivity,
-                            "" + jObjError.getString("message"),
+                            AppConstant.serverErrorMessage(jObjError),
                             Toast.LENGTH_SHORT
                         ).show()
 

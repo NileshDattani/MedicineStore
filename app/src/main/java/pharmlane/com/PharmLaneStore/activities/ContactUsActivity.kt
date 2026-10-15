@@ -126,7 +126,7 @@ class ContactUsActivity : AppCompatActivity(), View.OnClickListener {
                         val jObjError = JSONObject(response.errorBody()!!.string())
                         Toast.makeText(
                             this@ContactUsActivity,
-                            "" + jObjError.getString("message"),
+                            AppConstant.serverErrorMessage(jObjError),
                             Toast.LENGTH_SHORT
                         ).show()
 

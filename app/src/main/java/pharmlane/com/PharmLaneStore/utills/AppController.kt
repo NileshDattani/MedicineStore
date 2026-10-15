@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.multidex.MultiDex
 import androidx.multidex.MultiDexApplication
 
+import com.google.firebase.FirebaseApp
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 
 
@@ -34,6 +35,8 @@ class AppController : MultiDexApplication() {
             Timber.plant(ReleaseTree())
         }*/
      //   Fabric.with(this, Crashlytics())
+        // Normally done by FirebaseInitProvider; explicit so Crashlytics never sees an uninitialised app.
+        FirebaseApp.initializeApp(this)
         val crashlytics = FirebaseCrashlytics.getInstance()
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true)
 // To log a message to a crash report, use the following syntax:
@@ -41,6 +44,7 @@ class AppController : MultiDexApplication() {
         instance = this
         myContext = this
         MultiDex.install(this)
+        SystemBarInsets.install(this)
         /* FacebookSdk.sdkInitialize(this)
          FacebookSdk.setApplicationId(getResources().getString(R.string.fb_app_id))*/
 

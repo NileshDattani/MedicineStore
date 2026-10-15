@@ -1,5 +1,6 @@
 package pharmlane.com.PharmLaneStore.loginactivities
 
+import pharmlane.com.PharmLaneStore.utills.firstAddress
 import android.Manifest
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
@@ -250,23 +251,8 @@ class StoreInfoActivity : AppCompatActivity(), View.OnClickListener, LocationLis
 
                         try {
 
-                            val addresses = geocoder!!.getFromLocation(latitude, longitude, 1)
-
-                            val addressLine1 = addresses.get(0).getAddressLine(0)
-                            Log.e("line1", addressLine1)
-
-                            val city = addresses.get(0).locality
-                            Log.e("city", city)
-
-                            val state = addresses.get(0).adminArea
-                            Log.e("state", state)
-
-                            val pinCode = addresses.get(0).postalCode
-                            Log.e("pinCode", pinCode)
-
-                            val fullAddress =
-                                    addressLine1 + ",  " + city + ",  " + state + ",  " + pinCode
-                            edt_geo_location.text = addressLine1
+                            val addressLine1 = geocoder!!.firstAddress(latitude, longitude)?.getAddressLine(0)
+                            if (addressLine1 != null) edt_geo_location.text = addressLine1
                         } catch (e: IOException) {
                             e.printStackTrace()
                             Log.e("MainActivity", e.toString())
@@ -301,11 +287,9 @@ class StoreInfoActivity : AppCompatActivity(), View.OnClickListener, LocationLis
 
                         Log.e("ehlodsd", "latitude   " + store_latitude + "   longitude   " + store_longitude)
 
-                        val addresses = geocoder!!.getFromLocation(location.latitude, location.longitude, 1)
+                        val addressLine1 = geocoder!!.firstAddress(location.latitude, location.longitude)?.getAddressLine(0)
 
-                        val addressLine1 = addresses.get(0).getAddressLine(0)
-
-                        edt_geo_location.text = addressLine1
+                        if (addressLine1 != null) edt_geo_location.text = addressLine1
                         //  findViewById<TextView>(R.id.latTextView).text = location.latitude.toString()
                         //   findViewById<TextView>(R.id.lonTextView).text = location.longitude.toString()
                     }
@@ -340,15 +324,13 @@ class StoreInfoActivity : AppCompatActivity(), View.OnClickListener, LocationLis
 
     private val mLocationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
-            var mLastLocation: Location = locationResult.lastLocation
+            val mLastLocation: Location = locationResult.lastLocation ?: return
 
             store_latitude = mLastLocation.latitude.toString()
             store_longitude = mLastLocation.longitude.toString()
-            val addresses = geocoder!!.getFromLocation(mLastLocation.latitude, mLastLocation.longitude, 1)
+            val addressLine1 = geocoder!!.firstAddress(mLastLocation.latitude, mLastLocation.longitude)?.getAddressLine(0)
 
-            val addressLine1 = addresses.get(0).getAddressLine(0)
-
-            edt_geo_location.text = addressLine1
+            if (addressLine1 != null) edt_geo_location.text = addressLine1
 
         }
     }

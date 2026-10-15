@@ -138,7 +138,7 @@ class ScaleFile {
         private fun getRealPathFromURI(contentURI: String,context: Context): String {
             val contentUri = Uri.parse(contentURI)
             val cursor: Cursor =
-                context?.getContentResolver().query(contentUri, null, null, null, null)!!
+                context.contentResolver.query(contentUri, null, null, null, null)!!
             return if (cursor == null) {
                 contentUri.path ?: ""
             } else {

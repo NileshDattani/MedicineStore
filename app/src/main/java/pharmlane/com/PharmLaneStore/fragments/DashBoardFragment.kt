@@ -258,7 +258,7 @@ class DashBoardFragment : Fragment(), View.OnClickListener, SwipeRefreshLayout.O
                         val jObjError = JSONObject(response.errorBody()!!.string())
                         Toast.makeText(
                                 activity,
-                                "" + jObjError.getString("message"),
+                                AppConstant.serverErrorMessage(jObjError),
                                 Toast.LENGTH_SHORT
                         ).show()
 

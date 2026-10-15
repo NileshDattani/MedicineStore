@@ -126,7 +126,7 @@ class MySubscriptionActivity : AppCompatActivity(), View.OnClickListener, PlansA
                         val jObjError = JSONObject(response.errorBody()!!.string())
                         Toast.makeText(
                                 this@MySubscriptionActivity,
-                                "" + jObjError.getString("message"),
+                                AppConstant.serverErrorMessage(jObjError),
                                 Toast.LENGTH_SHORT
                         ).show()
                     } catch (e: Exception) {
@@ -202,7 +202,7 @@ class MySubscriptionActivity : AppCompatActivity(), View.OnClickListener, PlansA
                         val jObjError = JSONObject(response.errorBody()!!.string())
                         Toast.makeText(
                                 this@MySubscriptionActivity,
-                                "" + jObjError.getString("message"),
+                                AppConstant.serverErrorMessage(jObjError),
                                 Toast.LENGTH_SHORT
                         ).show()
 
@@ -252,7 +252,7 @@ class MySubscriptionActivity : AppCompatActivity(), View.OnClickListener, PlansA
                         val jObjError = JSONObject(response.errorBody()!!.string())
                         Toast.makeText(
                                 this@MySubscriptionActivity,
-                                "" + jObjError.getString("message"),
+                                AppConstant.serverErrorMessage(jObjError),
                                 Toast.LENGTH_SHORT
                         ).show()
 

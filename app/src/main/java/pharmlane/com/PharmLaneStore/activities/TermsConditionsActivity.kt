@@ -112,7 +112,7 @@ class TermsConditionsActivity : AppCompatActivity(), View.OnClickListener {
                         val jObjError = JSONObject(response.errorBody()!!.string())
                         Toast.makeText(
                             this@TermsConditionsActivity,
-                            "" + jObjError.getString("message"),
+                            AppConstant.serverErrorMessage(jObjError),
                             Toast.LENGTH_SHORT
                         ).show()
 

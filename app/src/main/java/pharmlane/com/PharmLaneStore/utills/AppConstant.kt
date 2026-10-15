@@ -3,6 +3,7 @@
 package pharmlane.com.PharmLaneStore.utills
 
 
+import org.json.JSONObject
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.graphics.Bitmap
@@ -21,7 +22,9 @@ import java.util.concurrent.TimeUnit
 
 object AppConstant {
 
-    const val BASE_URL = "http://app.pharmlane.com/pharmlen/api/"// "http://96.126.124.89/medical/api/"
+    // Must be https: the server 301-redirects http to https, and OkHttp re-sends a redirected
+    // POST as a body-less GET, so every API call failed with "Unknown method" over http.
+    const val BASE_URL = "https://app.pharmlane.com/pharmlen/api/"// "http://96.126.124.89/medical/api/"
    // const val BASE_URL= "https://www.pharmlane.com/"
     var MAINACTIVITY_LAT = ""
     var MAINACTIVITY_LONG = ""
@@ -190,8 +193,8 @@ object AppConstant {
         val dateFormat1 = SimpleDateFormat("HH:mm:ss", Locale.US)
         val createdConvertedTime = dateFormat1.parse(startTime)
         val createdConvertedTime1 = dateFormat1.parse(endTime)
-        return SimpleDateFormat("hh:mm a",Locale.US).format(createdConvertedTime).toLowerCase() + " to " + SimpleDateFormat("hh:mm a").format(createdConvertedTime1
-        ).toLowerCase()
+        return SimpleDateFormat("hh:mm a",Locale.US).format(createdConvertedTime).lowercase() + " to " + SimpleDateFormat("hh:mm a").format(createdConvertedTime1
+        ).lowercase()
     }
 
     fun convertDelDate(from_date: String): String {
@@ -204,14 +207,14 @@ object AppConstant {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
         val createdConvertedDate = dateFormat.parse(from_date)
 
-        return SimpleDateFormat("dd MMM,yyyy",Locale.US).format(createdConvertedDate)+" "+SimpleDateFormat("hh:mm a").format(createdConvertedDate).toLowerCase()
+        return SimpleDateFormat("dd MMM,yyyy",Locale.US).format(createdConvertedDate)+" "+SimpleDateFormat("hh:mm a").format(createdConvertedDate).lowercase()
     }
 
     fun convertDelDate2(from_date: String): String {
         val dateFormat = SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.US)
         val createdConvertedDate = dateFormat.parse(from_date)
 
-        return SimpleDateFormat("dd MMM,yyyy",Locale.US).format(createdConvertedDate)+" "+SimpleDateFormat("hh:mm a").format(createdConvertedDate).toLowerCase()
+        return SimpleDateFormat("dd MMM,yyyy",Locale.US).format(createdConvertedDate)+" "+SimpleDateFormat("hh:mm a").format(createdConvertedDate).lowercase()
     }
 
     fun submitofferDate(from_date: String): String {
@@ -241,7 +244,7 @@ object AppConstant {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
         val createdConvertedDate = dateFormat.parse(datenTime)
 
-        return SimpleDateFormat("dd MMM,yy",Locale.US).format(createdConvertedDate)+" "+SimpleDateFormat("hh:mm a").format(createdConvertedDate).toLowerCase()
+        return SimpleDateFormat("dd MMM,yy",Locale.US).format(createdConvertedDate)+" "+SimpleDateFormat("hh:mm a").format(createdConvertedDate).lowercase()
 
     }
 
@@ -366,5 +369,16 @@ object AppConstant {
             b = false
         }
         return b
+    }
+
+    /** Message for a failed API response: the server sends either "message" or an "error" (string or object). */
+    fun serverErrorMessage(body: JSONObject): String {
+        body.optString("message").takeIf { it.isNotBlank() }?.let { return it }
+        val error = body.opt("error")
+        return when (error) {
+            is JSONObject -> error.optString("message").takeIf { it.isNotBlank() } ?: "Server error"
+            is String -> error
+            else -> "Server error"
+        }
     }
 }

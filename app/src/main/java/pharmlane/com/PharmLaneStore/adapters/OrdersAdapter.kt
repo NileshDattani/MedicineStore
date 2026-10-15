@@ -203,11 +203,11 @@ class OrdersAdapter(
         val dateFormat = SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.US)
         val createdConvertedDate = dateFormat.parse(datenTime)
         val date = SimpleDateFormat("dd MMM,yyyy",Locale.US).format(createdConvertedDate)
-        val time = SimpleDateFormat("hh:mm a",Locale.US).format(createdConvertedDate).toLowerCase()
+        val time = SimpleDateFormat("hh:mm a",Locale.US).format(createdConvertedDate).lowercase()
         holder.txtDatenTime.text = (date + " " + time)
 
         val cal = Calendar.getInstance()
-        val currDate = dateFormat.format(cal.time).toLowerCase()
+        val currDate = dateFormat.format(cal.time).lowercase()
         cal.time = dateFormat.parse(datenTime)
         cal.add(Calendar.DATE, 1)
         val convertedDate = dateFormat.format(cal.time)

@@ -1,5 +1,6 @@
 package pharmlane.com.PharmLaneStore.activities
 
+import pharmlane.com.PharmLaneStore.utills.firstAddress
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
@@ -214,11 +215,9 @@ class EditStoreDetailsActivity : AppCompatActivity(), View.OnClickListener, Loca
 
                         Log.e("ehlodsd", "latitude   " + latitude + "   longitude   " + longitude)
 
-                        val addresses = geocoder!!.getFromLocation(location.latitude, location.longitude, 1)
+                        val addressLine1 = geocoder!!.firstAddress(location.latitude, location.longitude)?.getAddressLine(0)
 
-                        val addressLine1 = addresses.get(0).getAddressLine(0)
-
-                        edt_geo_location.setText(addressLine1)
+                        if (addressLine1 != null) edt_geo_location.setText(addressLine1)
                         //  findViewById<TextView>(R.id.latTextView).text = location.latitude.toString()
                         //   findViewById<TextView>(R.id.lonTextView).text = location.longitude.toString()
                     }
@@ -253,14 +252,12 @@ class EditStoreDetailsActivity : AppCompatActivity(), View.OnClickListener, Loca
 
     private val mLocationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
-            var mLastLocation: Location = locationResult.lastLocation
+            val mLastLocation: Location = locationResult.lastLocation ?: return
 
 
-            val addresses = geocoder!!.getFromLocation(mLastLocation.latitude, mLastLocation.longitude, 1)
+            val addressLine1 = geocoder!!.firstAddress(mLastLocation.latitude, mLastLocation.longitude)?.getAddressLine(0)
 
-            val addressLine1 = addresses.get(0).getAddressLine(0)
-
-            edt_geo_location.setText(addressLine1)
+            if (addressLine1 != null) edt_geo_location.setText(addressLine1)
             //  findViewById<TextView>(R.id.latTextView).text = mLastLocation.latitude.toString()
             // findViewById<TextView>(R.id.lonTextView).text = mLastLocation.longitude.toString()
         }
@@ -349,7 +346,7 @@ class EditStoreDetailsActivity : AppCompatActivity(), View.OnClickListener, Loca
                         val jObjError = JSONObject(response.errorBody()!!.string())
                         Toast.makeText(
                                 this@EditStoreDetailsActivity,
-                                "" + jObjError.getString("message"),
+                                AppConstant.serverErrorMessage(jObjError),
                                 Toast.LENGTH_SHORT
                         ).show()
 

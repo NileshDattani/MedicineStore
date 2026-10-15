@@ -473,7 +473,7 @@ class VerifyActivity : AppCompatActivity(), View.OnClickListener {
                         val jObjError = JSONObject(response.errorBody()!!.string())
                         Toast.makeText(
                                 this@VerifyActivity,
-                                "" + jObjError.getString("message"),
+                                AppConstant.serverErrorMessage(jObjError),
                                 Toast.LENGTH_SHORT
                         ).show()
 
@@ -522,7 +522,7 @@ class VerifyActivity : AppCompatActivity(), View.OnClickListener {
                         val jObjError = JSONObject(response.errorBody()!!.string())
                         Toast.makeText(
                                 this@VerifyActivity,
-                                "" + jObjError.getString("message"),
+                                AppConstant.serverErrorMessage(jObjError),
                                 Toast.LENGTH_SHORT
                         ).show()
 

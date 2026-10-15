@@ -1,5 +1,7 @@
 package pharmlane.com.PharmLaneStore.activities
 
+import android.os.Build
+import androidx.activity.OnBackPressedCallback
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Dialog
@@ -60,6 +62,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // From Android 16 the system no longer calls onBackPressed(); back goes through the dispatcher.
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() = handleBack()
+        })
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR//  set status text dark
 
         setContentView(R.layout.activity_main)
@@ -70,6 +76,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
 
         getLastLocation()
+        if (checkPermissions() && needsNotificationPermission()) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), PERMISSION_ID + 1)
+        }
         storeDetailApi()
 
         AppConstant.setPreferenceText(AppConstant.OFFER_ID, "")
@@ -355,7 +364,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         AppConstant.remove(AppConstant.STORE_ID)
     }
 
-    override fun onBackPressed() {
+    private fun handleBack() {
         if (doubleBackToExitOnce) {
             // super.onBackPressed()
             moveTaskToBack(true)
@@ -434,7 +443,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private val mLocationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
-            val mLastLocation: Location = locationResult.lastLocation
+            val mLastLocation: Location = locationResult.lastLocation ?: return
 
             MAINACTIVITY_LAT = mLastLocation.latitude.toString()
             MAINACTIVITY_LONG = mLastLocation.longitude.toString()
@@ -464,12 +473,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun requestPermissions() {
-        ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION),
-                PERMISSION_ID
-        )
+        val permissions = arrayListOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
+        if (needsNotificationPermission()) permissions.add(Manifest.permission.POST_NOTIFICATIONS)
+        ActivityCompat.requestPermissions(this, permissions.toTypedArray(), PERMISSION_ID)
     }
+
+    // Android 13+ keeps order notifications off until the user allows them.
+    private fun needsNotificationPermission(): Boolean =
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+                    ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         if (requestCode == PERMISSION_ID) {

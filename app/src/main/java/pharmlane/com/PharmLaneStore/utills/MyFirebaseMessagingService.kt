@@ -111,8 +111,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val stackBuilder = TaskStackBuilder.create(this)
 //        stackBuilder.addParentStack(ActivityStartScreen::class.java)
         stackBuilder.addNextIntent(resultIntent)
+        // Android 12+ throws if a PendingIntent does not declare its mutability, which crashed
+        // the app every time an order notification arrived.
         val resultPendingIntent =
-                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
+                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         mBuilder.setContentIntent(resultPendingIntent)
         val mNotificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build())

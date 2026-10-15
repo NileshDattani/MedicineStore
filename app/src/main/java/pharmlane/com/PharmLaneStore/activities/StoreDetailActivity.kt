@@ -159,7 +159,7 @@ class StoreDetailActivity : AppCompatActivity(), View.OnClickListener {
                         val jObjError = JSONObject(response.errorBody()!!.string())
                         Toast.makeText(
                                 this@StoreDetailActivity,
-                                "" + jObjError.getString("message"),
+                                AppConstant.serverErrorMessage(jObjError),
                                 Toast.LENGTH_SHORT
                         ).show()
 
@@ -224,7 +224,7 @@ class StoreDetailActivity : AppCompatActivity(), View.OnClickListener {
 
     private val mLocationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
-            var mLastLocation: Location = locationResult.lastLocation
+            val mLastLocation: Location = locationResult.lastLocation ?: return
 
 
             currentLatitude = mLastLocation.getLatitude().toString()

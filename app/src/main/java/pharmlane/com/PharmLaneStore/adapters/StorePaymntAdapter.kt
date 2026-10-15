@@ -78,11 +78,11 @@ class StorePaymntAdapter(
             Glide.with(context).load(paymentArray[pos].qr_img)
                     .placeholder(R.drawable.upload_picture_box)
                     .listener(object : RequestListener<Drawable?> {
-                        override fun onLoadFailed(@Nullable e: GlideException?, model: Any?, target: Target<Drawable?>?, isFirstResource: Boolean): Boolean {
+                        override fun onLoadFailed(@Nullable e: GlideException?, model: Any?, target: Target<Drawable?>, isFirstResource: Boolean): Boolean {
                             return false
                         }
 
-                        override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable?>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                        override fun onResourceReady(resource: Drawable, model: Any, target: Target<Drawable?>?, dataSource: DataSource, isFirstResource: Boolean): Boolean {
                             Log.e("myisSelected", "isSelected-->  " + paymentArray[pos].isSelected)
 
                             return false

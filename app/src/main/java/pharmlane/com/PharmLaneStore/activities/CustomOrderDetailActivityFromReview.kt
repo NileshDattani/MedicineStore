@@ -290,7 +290,7 @@ class CustomOrderDetailActivityFromReview : AppCompatActivity(), View.OnClickLis
 
                     txt_order_id.text = "ID: " + customOrderdataReview!!.orderNo
                     txt_order_dtntime.text = (customOrderdataReview?.createdDate!!)
-                    //  AppConstant.convertdatentimetoOrderTime(customOrderdataReview!!.createdDate!!).toLowerCase()
+                    //  AppConstant.convertdatentimetoOrderTime(customOrderdataReview!!.createdDate!!).lowercase()
 
                     /* if (customOrderdataReview!!.products!!.size>3){
                          txt_view_all_produts.visibility = View.VISIBLE
@@ -381,7 +381,7 @@ class CustomOrderDetailActivityFromReview : AppCompatActivity(), View.OnClickLis
                         val jObjError = JSONObject(response.errorBody()!!.string())
                         Toast.makeText(
                                 this@CustomOrderDetailActivityFromReview,
-                                "" + jObjError.getString("message"),
+                                AppConstant.serverErrorMessage(jObjError),
                                 Toast.LENGTH_SHORT
                         ).show()
 
@@ -413,11 +413,11 @@ class CustomOrderDetailActivityFromReview : AppCompatActivity(), View.OnClickLis
             val createdConvertedTime = dateFormat1.parse(startTime)
             val createdConvertedTime1 = dateFormat1.parse(endTime)
             txt_del_time.text =
-                    SimpleDateFormat("hh:mm a",Locale.US).format(createdConvertedTime).toLowerCase() + " to " + SimpleDateFormat(
+                    SimpleDateFormat("hh:mm a",Locale.US).format(createdConvertedTime).lowercase() + " to " + SimpleDateFormat(
                             "hh:mm a"
                     ).format(
                             createdConvertedTime1
-                    ).toLowerCase()
+                    ).lowercase()
         }
         val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.US)
         if (!from_date.equals("")) {

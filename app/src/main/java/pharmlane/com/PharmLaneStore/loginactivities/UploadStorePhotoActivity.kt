@@ -1,5 +1,7 @@
 package pharmlane.com.PharmLaneStore.loginactivities
 
+import pharmlane.com.PharmLaneStore.utills.IMAGE_PERMISSIONS
+import pharmlane.com.PharmLaneStore.utills.REQUEST_CAMERA_PERMISSION
 import android.Manifest
 import android.annotation.TargetApi
 import androidx.appcompat.app.AppCompatActivity
@@ -24,8 +26,8 @@ import pharmlane.com.PharmLaneStore.R
 import pharmlane.com.PharmLaneStore.utills.AppConstant
 import pharmlane.com.PharmLaneStore.utills.InternalStorageContentProvider
 import pharmlane.com.PharmLaneStore.utills.ScaleFile
-import com.theartofdev.edmodo.cropper.CropImage
-import com.theartofdev.edmodo.cropper.CropImageView
+import pharmlane.com.PharmLaneStore.utills.cropper.CropImage
+import com.canhub.cropper.CropImageView
 import kotlinx.android.synthetic.main.activity_upload_store_photo.*
 import kotlinx.android.synthetic.main.activity_upload_store_photo.btn_next
 import kotlinx.android.synthetic.main.activity_upload_store_photo.img_back
@@ -43,12 +45,7 @@ class UploadStorePhotoActivity : AppCompatActivity(), View.OnClickListener {
     private val REQUEST_CAMERA = 0
     val REQUEST_CODE_TAKE_PICTURE = 2
     val REQUEST_CODE_GALLERY = 1
-    val INITIAL_GALLERY = arrayOf<String>(
-        Manifest.permission.CAMERA,
-        Manifest.permission.READ_EXTERNAL_STORAGE,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE
-
-    )
+    val INITIAL_GALLERY = IMAGE_PERMISSIONS
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -118,6 +115,11 @@ class UploadStorePhotoActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun openCamera() {
+        // Declaring CAMERA means ACTION_IMAGE_CAPTURE throws unless it is granted.
+        if (!hasPermission(Manifest.permission.CAMERA)) {
+            requestPermissions(arrayOf(Manifest.permission.CAMERA), REQUEST_CAMERA_PERMISSION)
+            return
+        }
         val builder = StrictMode.VmPolicy.Builder()
         StrictMode.setVmPolicy(builder.build())
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
@@ -150,9 +152,7 @@ class UploadStorePhotoActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun canAccessCamera(): Boolean {
-        return hasPermission(Manifest.permission.CAMERA) && hasPermission(Manifest.permission.READ_EXTERNAL_STORAGE) && hasPermission(
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-        )
+        return IMAGE_PERMISSIONS.all { hasPermission(it) }
     }
 
     @TargetApi(Build.VERSION_CODES.M)

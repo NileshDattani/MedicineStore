@@ -404,7 +404,7 @@ class RateCustomerActivity : AppCompatActivity(), View.OnClickListener {
                 } else {
                     try {
                         val jObjError = JSONObject(response.errorBody()!!.string())
-                       // Toast.makeText(this@RateCustomerActivity, "" + jObjError.getString("message"), Toast.LENGTH_SHORT).show()
+                       // Toast.makeText(this@RateCustomerActivity, AppConstant.serverErrorMessage(jObjError), Toast.LENGTH_SHORT).show()
 
 
                     } catch (e: Exception) {
